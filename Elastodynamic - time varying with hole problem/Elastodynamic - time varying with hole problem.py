@@ -44,33 +44,6 @@ class ANN_DistModel(nn.Module):
         return x
 
 
-#### Creating part Modelwith Pytorch
-
-class ANN_PartModel(nn.Module):
-    def __init__(self, N_INPUT=3, N_OUTPUT=5, N_HIDDEN=20, N_LAYERS=4):
-        super().__init__()
-        activation = nn.Tanh
-        self.fcs = nn.Sequential(*[
-                        nn.Linear(N_INPUT, N_HIDDEN),
-                        activation()])
-        self.fch = nn.Sequential(*[
-                        nn.Sequential(*[
-                            nn.Linear(N_HIDDEN, N_HIDDEN),
-                            activation()]) for _ in range(N_LAYERS-1)])
-        self.fce = nn.Linear(N_HIDDEN, N_OUTPUT)
-        self.apply(self._init_weights)
-    def _init_weights(self, module):
-      if isinstance(module, nn.Linear):
-          nn.init.xavier_normal_(module.weight)
-          if module.bias is not None:
-              module.bias.data.zero_()
-        
-    def forward(self, x):
-        x = self.fcs(x)
-        x = self.fch(x)
-        x = self.fce(x)
-        return x
-
 
 #### Creating Modelwith Pytorch
 
@@ -239,13 +212,7 @@ RT=torch.FloatTensor(RT).requires_grad_(True)
 XYT=torch.FloatTensor(XYT_c).requires_grad_(True)
 IC_dist=torch.FloatTensor(IC_dist).requires_grad_(True)
 
-def sigma11(time):
-    return 0.5 * torch.sin((2 * PI / period) * time + 3 * PI / 2) + 0.5
 
-def model_part(xyt):
-    res=torch.zeros(list(xyt.size())[0],5)
-    res[:,2]=sigma11(xyt[:,2])
-    return torch.FloatTensor(res).requires_grad_(True)
 
 class Build_Data_dist(Dataset):
     # Constructor
@@ -306,6 +273,15 @@ for i in range(10):
                 (i + 1, _ + 1, running_loss / 100))
             running_loss = 0.0
             torch.save(model_dist.state_dict(), "weights/distance_time.pth")
+
+
+def sigma11(time):
+    return 0.5 * torch.sin((2 * PI / period) * time + 3 * PI / 2) + 0.5
+
+def model_part(xyt):
+    res=torch.zeros(list(xyt.size())[0],5)
+    res[:,2]=sigma11(xyt[:,2])
+    return torch.FloatTensor(res).requires_grad_(True)
 
 
 torch.manual_seed(123)

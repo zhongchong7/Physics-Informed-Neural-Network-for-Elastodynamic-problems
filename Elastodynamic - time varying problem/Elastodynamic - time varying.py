@@ -44,33 +44,6 @@ class ANN_DistModel(nn.Module):
         return x
 
 
-#### Creating part Modelwith Pytorch
-
-class ANN_PartModel(nn.Module):
-    def __init__(self, N_INPUT=3, N_OUTPUT=5, N_HIDDEN=20, N_LAYERS=4):
-        super().__init__()
-        activation = nn.Tanh
-        self.fcs = nn.Sequential(*[
-                        nn.Linear(N_INPUT, N_HIDDEN),
-                        activation()])
-        self.fch = nn.Sequential(*[
-                        nn.Sequential(*[
-                            nn.Linear(N_HIDDEN, N_HIDDEN),
-                            activation()]) for _ in range(N_LAYERS-1)])
-        self.fce = nn.Linear(N_HIDDEN, N_OUTPUT)
-        self.apply(self._init_weights)
-    def _init_weights(self, module):
-      if isinstance(module, nn.Linear):
-          nn.init.xavier_normal_(module.weight)
-          if module.bias is not None:
-              module.bias.data.zero_()
-        
-    def forward(self, x):
-        x = self.fcs(x)
-        x = self.fch(x)
-        x = self.fce(x)
-        return x
-
 
 #### Creating Modelwith Pytorch
 
@@ -182,14 +155,8 @@ s11_RT = 0.5 * np.sin((2 * PI / period) * t_RT + 3 * PI / 2) + 0.5
 # s11_RT=np.ones(RT[:,2:3].shape)
 RT = np.concatenate((RT, s11_RT), 1)
 
-def sigma11(time):
-    return 0.5 * torch.sin((2 * PI / period) * time + 3 * PI / 2) + 0.5
 
-def model_part(xyt):
-    res=torch.zeros(list(xyt.size())[0],5)
-    res[:,2]=sigma11(xyt[:,2])
-    return torch.FloatTensor(res).requires_grad_(True)
-# model_part.to(device)
+
 # Add some boundary points into the collocation point set
 XYT_c = np.concatenate((XYT_c, LF[::2, :], RT[::2, 0:3], UP[::2, :], LW[::2, :]), 0)
 IC_dist=lb + np.array([0.5, 0.5, 0.0]) * lhs(3, XYT_dist.shape[0])
@@ -263,6 +230,15 @@ for i in range(50):
                 (i + 1, _ + 1, running_loss / 100))
             running_loss = 0.0
             torch.save(model_dist.state_dict(), "weights/distance_time.pth")
+
+#part model 
+def sigma11(time):
+    return 0.5 * torch.sin((2 * PI / period) * time + 3 * PI / 2) + 0.5
+
+def model_part(xyt):
+    res=torch.zeros(list(xyt.size())[0],5)
+    res[:,2]=sigma11(xyt[:,2])
+    return torch.FloatTensor(res).requires_grad_(True)
 
 
 torch.manual_seed(123)
