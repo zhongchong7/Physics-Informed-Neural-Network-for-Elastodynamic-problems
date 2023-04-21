@@ -1,10 +1,11 @@
 # Physics-Informed-Neural-Network-for-Elastodynamic-problems
+<p>
+PINN is used to solve non-linear partial differential physics equation using neural network. In this project, we are solving elasticity problem which is 2nd order differential equation and compare its result with FEM (numercal method to solve equation).
+</p>
 
-physics-informed neural network for solving elastodynamics (elasticity) problem
-
-## Reference paper 
-
-[Chengping Rao, Hao Sun and Yang Liu. Physics informed deep learning for computational elastodynamics without labeled data.](https://arxiv.org/abs/2006.08472)
+<p>
+  This is a research project done under proffesor Dr. Nilanjan Malik. 
+ </p> 
 
 
 ## Description for each folder
@@ -87,3 +88,7 @@ Refresh to reload the gifs
 
 <img src="https://github.com/luv-bansal/Physics-Informed-Neural-Network-for-Elastodynamic-problems/blob/main/Elastodynamic%20-%20time%20varying%20with%20hole%20problem/results/stress%20near%20hole%20(2).jpg" width="300" />
 </p>
+
+## Reference paper 
+
+[Chengping Rao, Hao Sun and Yang Liu. Physics informed deep learning for computational elastodynamics without labeled data.](https://arxiv.org/abs/2006.08472)
