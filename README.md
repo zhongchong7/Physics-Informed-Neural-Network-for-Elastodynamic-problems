@@ -22,6 +22,13 @@ $L = L_{\text{data}} + \lambda L_{\text{physics}}$
 
 where $L_{\text{data}}$ is the data-driven loss term, $L_{\text{physics}}$ is the physics-based loss term, and $\lambda$ is a regularization parameter that controls the balance between these two terms. The data-driven loss term measures the discrepancy between the predictions of the neural network and the available data, while the physics-based loss term enforces the physical constraints of the problem being solved. The goal of the PINN is to minimize this loss function with respect to the model parameters in order to obtain accurate predictions and simulations of the physical system of interest.
 
+## Problem statement
+
+> Defected plate under periodic uni-axial tension
+
+A two-dimensional plane stress problem, i.e., a defected plate under uni-axial tension, is considered in this example. The total length of the square plate is 1.0 m while the radius of the circular defection located in the center is 0.1 m. Due to the symmetry of the problem, only a quarter plate is simulated (see Fig). The Young’s modulus and Poisson’s ratio of the plate are 20 MPa and 0.25, respectively. A uni-axial normal traction Tn(t) is applied on the right edge as shown in Fig.
+
+![image](https://user-images.githubusercontent.com/70321430/233512798-b496170b-6bf2-49e2-9070-bfe3514b8c16.png)
 
 ## Elasticity Equation
 
@@ -59,7 +66,7 @@ Refresh to reload the gifs
 
 <img src="https://github.com/luv-bansal/Physics-Informed-Neural-Network-for-Elastodynamic-problems/blob/main/Elastodynamic%20-%20time%20varying%20with%20hole%20problem/results/stress%20comparison.gif" width="500" />
 
->Displacement(in x and y direction) in Defected plate under cyclic load (top: PINN; middle: FEM; bottom: error)
+>Displacement(u: displacement in x-direction & v: displacement in y-direction) in Defected plate under cyclic load (top: PINN; middle: FEM; bottom: error)
 
 <img src="https://github.com/luv-bansal/Physics-Informed-Neural-Network-for-Elastodynamic-problems/blob/main/Elastodynamic%20-%20time%20varying%20with%20hole%20problem/results/Displacement%20comparison.gif" width="500" />
 
